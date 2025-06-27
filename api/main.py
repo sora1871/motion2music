@@ -1,34 +1,38 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from contextlib import asynccontextmanager
 import torch
 import numpy as np
 import joblib
 import sys
 import os
+from pydantic import BaseModel
 
-# scripts/ をimport対象に追加
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "scripts"))
+from model_def import AutoEncoder
 
-from model_def import AutoEncoder  # モデルの定義を読み込み
-
-# FastAPIアプリのインスタンスを作成
-app = FastAPI()
-
-# モデルとスケーラーの読み込み
 model_path = "models/ae_model.pt"
 scaler_path = "models/scaler.joblib"
 
-scaler = joblib.load(scaler_path)
+# グローバル変数（後から app.state に格納する）
+model = None
+scaler = None
 
-model = AutoEncoder(input_dim=66, latent_dim=8)
-model.load_state_dict(torch.load(model_path, map_location="cpu"))
-model.eval()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global model, scaler
+    scaler = joblib.load(scaler_path)
+    model = AutoEncoder(input_dim=66, latent_dim=8)
+    model.load_state_dict(torch.load(model_path, map_location="cpu"))
+    model.eval()
+    print("✅ Model & scaler loaded")
+    yield
+    # 終了処理などがあればここに書く
 
-# 入力の定義（Pydantic）
+app = FastAPI(lifespan=lifespan)
+
 class FeatureInput(BaseModel):
-    features: list[float]  # 長さ66の特徴量ベクトル
+    features: list[float]
 
-# エンドポイントの定義
 @app.post("/encode")
 def encode_features(data: FeatureInput):
     x = np.array(data.features).reshape(1, -1)
@@ -37,3 +41,7 @@ def encode_features(data: FeatureInput):
     with torch.no_grad():
         z = model.encoder(x_tensor).numpy()
     return {"latent": z[0].tolist()}
+
+@app.get("/")
+def root():
+    return {"message": "API is running"}
