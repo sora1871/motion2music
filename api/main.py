@@ -10,6 +10,8 @@ from pydantic import BaseModel
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "scripts"))
 from model_def import AutoEncoder
 
+#使用するモデルが混ざらないようにディレクトリを分けている
+#今回は初版のため1とした
 model_path = "models/1/ae_model.pt"
 scaler_path = "models/1/scaler.joblib"
 
