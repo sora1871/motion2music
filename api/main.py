@@ -10,8 +10,8 @@ from pydantic import BaseModel
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "scripts"))
 from model_def import AutoEncoder
 
-model_path = "models/1/ae_model.pt"
-scaler_path = "models/1/scaler.joblib"
+model_path = "models/lstm_0814/lstm_ae_model.pt"
+scaler_path = "models/lstm_0814/scaler.joblib"
 
 # グローバル変数（後から app.state に格納する）
 model = None
