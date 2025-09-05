@@ -6,7 +6,7 @@ import numpy as np, torch, joblib, os, sys
 
 # scripts/ を import path に追加
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "scripts"))
-from model_def import LSTMAutoEncoder
+from scripts.model_def import LSTMAutoEncoder
 
 # カレントディレクトリずれ対策（リポジトリ直下を基準にする）
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
