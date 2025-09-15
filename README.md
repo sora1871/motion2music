@@ -46,7 +46,7 @@ import requests
 import pandas as pd
 
 BASE_URL = "https://motion2music.onrender.com"  # ← APIのURL
-INPUT_CSV = "input.csv" ## ← 自分のモデルに通したいcsvの名前にしてください
+INPUT_CSV = "input.csv" 
 OUTPUT_CSV = "latent_series.csv" #←自分の潜在変数の出力をさせたい名前にしてください
 
 
@@ -73,9 +73,8 @@ print(f" 保存しました: {OUTPUT_CSV}")
 
 ```
 python call_api.py
-入力: input.csv
 ```
-
+入力: input.csv
 出力: latent_series.csv
 
 ## 5. 出力例
