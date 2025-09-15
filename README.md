@@ -13,7 +13,7 @@
 2. **ライブラリのインストール**  
    ターミナル（コマンドプロンプト）で以下を実行してください：
    ```bash
-   pip install requests pandas
+   pip install requirements.txt
 入力CSVを用意
 
 学習時と同じ特徴量列数（例: 99列）の数値データ
