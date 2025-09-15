@@ -1,12 +1,23 @@
 services:
   - type: web
-    name: motion2music-api
+    name: motion2music-lstm-0814
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn api.main:app --host 0.0.0.0 --port 10000
     plan: free
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.10
-      - key: PORT
-        value: 10000
+      - key: MODEL_PATH
+        value: /opt/render/project/src/models/lstm_0814/lstm_0814_model.pt
+      - key: SCALER_PATH
+        value: /opt/render/project/src/models/lstm_0814/scaler.joblib
+      - key: INPUT_DIM
+        value: "99"
+      - key: LATENT_DIM
+        value: "8"
+      - key: HIDDEN_DIM
+        value: "128"
+      - key: API_KEY
+        sync: false
