@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 .env
 *.ipynb_checkpoints
-data/raw/
+data/
 output/
 venv/
+test/

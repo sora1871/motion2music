@@ -26,6 +26,7 @@ import torch.nn as nn
 from fastapi import FastAPI, UploadFile, File, HTTPException, Header
 from pydantic import BaseModel
 import joblib
+from fastapi import Response
 
 
 # =========================
@@ -205,6 +206,9 @@ def health():
         "scaler_path": SCALER_PATH,
     }
 
+@app.head("/health")
+def health_head():
+    return Response(status_code=200)
 
 @app.post("/v1/latents/from-array", response_model=ArrayResponse)
 def latents_from_array(payload: ArrayRequest, x_api_key: Optional[str] = Header(default=None)):
